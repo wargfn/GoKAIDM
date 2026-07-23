@@ -58,6 +58,10 @@ def extract_markdown(pdf_path: Path, include_page_headings: bool = True) -> str:
     return format_markdown(page_texts, include_page_headings=include_page_headings)
 
 
+def finalize_output(markdown: str) -> str:
+    return markdown + ("\n" if markdown else "")
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Extract text from a PDF file and emit markdown-friendly output."
@@ -90,12 +94,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(markdown + ("\n" if markdown else ""), encoding="utf-8")
+        args.output.write_text(finalize_output(markdown), encoding="utf-8")
         return 0
 
-    sys.stdout.write(markdown)
-    if markdown:
-        sys.stdout.write("\n")
+    sys.stdout.write(finalize_output(markdown))
     return 0
 
 
