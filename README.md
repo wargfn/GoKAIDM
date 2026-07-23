@@ -16,17 +16,17 @@ python3 -m pip install -r requirements.txt
 Write markdown to stdout:
 
 ```bash
-python3 /home/runner/work/GoKAIDM/GoKAIDM/tools/pdf_to_markdown.py input.pdf
+python3 tools/pdf_to_markdown.py input.pdf
 ```
 
 Write markdown to a file:
 
 ```bash
-python3 /home/runner/work/GoKAIDM/GoKAIDM/tools/pdf_to_markdown.py input.pdf --output output.md
+python3 tools/pdf_to_markdown.py input.pdf --output output.md
 ```
 
 Skip page headings:
 
 ```bash
-python3 /home/runner/work/GoKAIDM/GoKAIDM/tools/pdf_to_markdown.py input.pdf --no-page-headings
+python3 tools/pdf_to_markdown.py input.pdf --no-page-headings
 ```
