@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.env
+.venv
+env/
+venv/
+
+# Byte-compiled
+*.pyc
+
+# Distribution / packaging
+pip-wheel-metadata/
+*.whl
+MANIFEST
+
+# Test / coverage
+.coverage
+.pytest_cache/
+htmlcov/
+*.coveragerc
+.tox/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# GoKAIDM runtime data – do not commit game saves
+data/campaigns/
+data/personas/
+data/locations/
+data/rulesets/
+data/sessions/
+*.pdf
+
+# Logs
+*.log
+logs/
+
+# Secrets / env config
+.env
+*.env
+config.local.json
