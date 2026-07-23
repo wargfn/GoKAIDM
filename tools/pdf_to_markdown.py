@@ -59,6 +59,7 @@ def extract_markdown(pdf_path: Path, include_page_headings: bool = True) -> str:
 
 
 def ensure_trailing_newline(markdown: str) -> str:
+    """Match typical CLI output by newline-terminating only non-empty content."""
     return markdown + ("\n" if markdown else "")
 
 
