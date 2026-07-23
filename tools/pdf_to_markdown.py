@@ -58,7 +58,7 @@ def extract_markdown(pdf_path: Path, include_page_headings: bool = True) -> str:
     return format_markdown(page_texts, include_page_headings=include_page_headings)
 
 
-def finalize_output(markdown: str) -> str:
+def ensure_trailing_newline(markdown: str) -> str:
     return markdown + ("\n" if markdown else "")
 
 
@@ -94,10 +94,10 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(finalize_output(markdown), encoding="utf-8")
+        args.output.write_text(ensure_trailing_newline(markdown), encoding="utf-8")
         return 0
 
-    sys.stdout.write(finalize_output(markdown))
+    sys.stdout.write(ensure_trailing_newline(markdown))
     return 0
 
 
