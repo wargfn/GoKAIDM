@@ -1,0 +1,17 @@
+{
+  "_comment": "Copy this file to config.json and fill in real values.",
+  "ai": {
+    "provider": "anthropic",
+    "model": "claude-opus-4-5",
+    "api_key_env": "ANTHROPIC_API_KEY",
+    "system_prompt": "You are the AI Dungeon Master for Gates of Krystalia, a solo/group TTRPG. Narrate vividly, adjudicate rules fairly, and keep the game engaging. Always respond in third-person narrative style."
+  },
+  "image": {
+    "provider": "gemini",
+    "api_key_env": "GEMINI_API_KEY",
+    "firefly_api_key_env": "ADOBE_FIREFLY_API_KEY",
+    "firefly_client_id_env": "ADOBE_FIREFLY_CLIENT_ID",
+    "default_style": "fantasy digital painting, Gates of Krystalia style"
+  },
+  "data_dir": "./data"
+}
