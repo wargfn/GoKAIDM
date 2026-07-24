@@ -11,6 +11,8 @@ Gates of Krystalia is a Table Top Role Playing Isekai based game by Andrea Rugge
 
 AI-led TTRPG companion for **Gates of Krystalia**, built entirely in Python 3.
 
+This project contains all of the files necessary for AI to track between sessions, including being able to startup in and continue running.
+
 ## Features
 
 | Feature | Description |
