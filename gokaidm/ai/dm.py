@@ -1,9 +1,10 @@
 """
 AI Dungeon Master for GoKAIDM.
 
-Supports two backends:
+Supports three backends:
   - ``anthropic``  → Claude (default)
   - ``openai``     → OpenAI Chat Completions
+    - ``copilot``    → GitHub Copilot SDK
 
 The DM holds recent session context to provide coherent narration, and
 exposes helper methods for the CLI (ask, roll_oracle, describe_scene, etc.).
@@ -11,6 +12,7 @@ exposes helper methods for the CLI (ask, roll_oracle, describe_scene, etc.).
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
 from typing import Any
@@ -71,6 +73,54 @@ def _openai_complete(
         max_tokens=max_tokens,
     )
     return response.choices[0].message.content or ""
+
+
+def _copilot_complete(
+    messages: list[dict[str, str]],
+    system: str,
+    model: str,
+    max_tokens: int = 1024,
+) -> str:
+    """Call the GitHub Copilot SDK and return the final assistant response."""
+    try:
+        from copilot import CopilotClient
+        from copilot.session_events import AssistantMessageData, SessionIdleData
+    except ImportError as exc:
+        raise RuntimeError(
+            "The 'github-copilot-sdk' package is required. "
+            "Run: pip install github-copilot-sdk"
+        ) from exc
+
+    async def complete() -> str:
+        reply = ""
+        done = asyncio.Event()
+        transcript = "\n\n".join(
+            f"{message['role'].upper()}: {message['content']}"
+            for message in messages
+        )
+
+        async with CopilotClient(
+            mode="empty", base_directory=os.path.expanduser("~/.copilot")
+        ) as client:
+            async with await client.create_session(
+                model=model,
+                system_message={"mode": "append", "content": system},
+                infinite_sessions={"enabled": False},
+                available_tools=[],
+            ) as session:
+                def on_event(event: Any) -> None:
+                    nonlocal reply
+                    if isinstance(event.data, AssistantMessageData):
+                        reply = event.data.content
+                    elif isinstance(event.data, SessionIdleData):
+                        done.set()
+
+                session.on(on_event)
+                await session.send(transcript)
+                await done.wait()
+        return reply
+
+    return asyncio.run(complete())
 
 
 # ---------------------------------------------------------------------------
@@ -154,7 +204,7 @@ class AIDungeonMaster:
 
     def _complete(self, user_message: str, max_tokens: int = 1024) -> str:
         """Send a message to the configured LLM backend and return the reply."""
-        if not self.api_key:
+        if self.provider != "copilot" and not self.api_key:
             return (
                 "[AI DM unavailable – no API key configured. "
                 "Set the relevant env variable in config.json.]"
@@ -170,6 +220,10 @@ class AIDungeonMaster:
         elif self.provider == "openai":
             reply = _openai_complete(
                 self._history, system, self.model, self.api_key, max_tokens
+            )
+        elif self.provider == "copilot":
+            reply = _copilot_complete(
+                self._history, system, self.model, max_tokens
             )
         else:
             raise ValueError(f"Unknown AI provider: {self.provider!r}")

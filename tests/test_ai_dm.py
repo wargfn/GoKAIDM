@@ -127,6 +127,16 @@ def test_narrate_openai() -> None:
     assert result == "The wind howls."
 
 
+def test_narrate_copilot_without_api_key() -> None:
+    dm = AIDungeonMaster(_make_config(provider="copilot", api_key=""))
+    with patch(
+        "gokaidm.ai.dm._copilot_complete", return_value="The torches flare."
+    ) as mock_call:
+        result = dm.narrate("Enter the hall.")
+    mock_call.assert_called_once()
+    assert result == "The torches flare."
+
+
 def test_describe_scene(dm: AIDungeonMaster) -> None:
     with patch("gokaidm.ai.dm._anthropic_complete", return_value="A cold stone chamber."):
         result = dm.describe_scene("Ancient Temple", atmosphere="eerie")

@@ -1,9 +1,9 @@
 {
   "_comment": "Copy this file to config.json and fill in real values.",
   "ai": {
-    "provider": "anthropic",
-    "model": "claude-opus-4-5",
-    "api_key_env": "ANTHROPIC_API_KEY",
+    "provider": "copilot",
+    "model": "auto",
+    "api_key_env": "",
     "system_prompt": "You are the AI Dungeon Master for Gates of Krystalia, a solo/group TTRPG. Narrate vividly, adjudicate rules fairly, and keep the game engaging. Always respond in third-person narrative style."
   },
   "image": {

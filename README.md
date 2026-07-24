@@ -17,12 +17,12 @@ Gates of Krystalia is a Table Top Role Playing Isekai based game by Andrea Rugge
 | Solo play (primary) | Structured solo notation format journal |
 | Group play | Multi-player session support built on the solo format |
 | PDF resource loader | Extract rule text from PDF rulebooks via `pypdf` |
-| AI Dungeon Master | Configurable AI backend (Anthropic Claude / OpenAI) |
+| AI Dungeon Master | Configurable AI backend (GitHub Copilot / Anthropic Claude / OpenAI) |
 | Image generation | MCP-based connections to Adobe Firefly **or** Gemini |
 
 ## Requirements
 
-- Python 3.10+
+- Python 3.11+
 - See `requirements.txt`
 
 ## Quick-start
@@ -31,13 +31,16 @@ Gates of Krystalia is a Table Top Role Playing Isekai based game by Andrea Rugge
 # 1. Install dependencies
 pip install -r requirements.txt
 
-# 2. Copy the example config and fill in your API keys
+# 2. Copy the example config
 cp config.example.json config.json
 
-# 3. Start a new solo campaign
+# 3. Authenticate with GitHub (skip if already signed in)
+gh auth login
+
+# 4. Start a new solo campaign
 python main.py new-campaign "The Shattered Realm"
 
-# 4. Open the interactive AI DM session
+# 5. Open the interactive AI DM session
 python main.py session --campaign "The Shattered Realm"
 ```
 
@@ -83,9 +86,9 @@ Types: `SCENE`, `ACTION`, `ORACLE`, `DM`, `NOTE`, `IMAGE`.
 ```json
 {
   "ai": {
-    "provider": "anthropic",
-    "model": "claude-opus-4-5",
-    "api_key_env": "ANTHROPIC_API_KEY"
+    "provider": "copilot",
+    "model": "auto",
+    "api_key_env": ""
   },
   "image": {
     "provider": "gemini",
@@ -95,7 +98,11 @@ Types: `SCENE`, `ACTION`, `ORACLE`, `DM`, `NOTE`, `IMAGE`.
 }
 ```
 
+The Copilot provider uses stored Copilot or GitHub CLI credentials. You can
+alternatively set `COPILOT_GITHUB_TOKEN`, `GH_TOKEN`, or `GITHUB_TOKEN`.
+Anthropic and OpenAI providers continue to use the environment variable named by
+`api_key_env`.
+
 ## License
 
 MIT
->>>>>>> 2bd6616 (feat: GoKAIDM – Gates of Krystalia AI DM full implementation)
