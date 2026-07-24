@@ -54,3 +54,4 @@ logs/
 .env
 *.env
 config.local.json
+config.json
